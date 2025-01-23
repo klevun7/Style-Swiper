@@ -1,5 +1,7 @@
 # Style-Swiper
 
+> Author(s): Ryan Nguyen, Kevin Cao, Sean Chang, Winnie Huang, Ken Dinh 
+
 ## Description
 
 We live in a world where fashion trends evolve rapidly, with people often struggling to find clothing that matches their style without spending hours browsing through many online stores. The process can be overwhelming and inefficient. By creating an app that allows users to swipe on clothing items, similar to dating apps, they can quickly express their preferences in an engaging and intuitive way.
