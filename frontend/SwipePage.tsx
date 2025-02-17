@@ -10,9 +10,15 @@ export default function SwipePage()
         {id: 3, name: "Item 3"},
     ]);
 
+    const [lastSwiped, setLastSwiped] = useState<{id: number; name: string} | null>(null); // Tracking previous state for undo functionality
     const [swipeMessage, setSwipeMessage] = useState<string | null>(null);  // Keep swipe state for output
 
     const handleSwipe = (direction: "left" | "right") => {
+        if (cards.length == 0) return;
+
+        const removedCard = cards[0];   // Save last swiped card
+        setLastSwiped(removedCard);     // Set the undo state
+        
         if (direction == 'left') {
             setSwipeMessage("Skip");
         }
@@ -22,6 +28,13 @@ export default function SwipePage()
         setTimeout(() => setSwipeMessage(null), 500);           // Make skip/keep msg disappear after 0.5 second
         cardSet((prev) => prev.slice(1));                       // Remove card from deck
     };
+
+    const handleUndo = () => {
+        if (lastSwiped) {                               
+            cardSet((prev) => [lastSwiped, ...prev]);   // Add last swiped card back to the front
+            setLastSwiped(null);                        // Clear up undo state for use again
+        }
+    }
 
     return (
         <div
@@ -42,6 +55,15 @@ export default function SwipePage()
                 (<SwipeCard key={cards[0].id} onSwipe={handleSwipe} />)
                 : (<p className="text-9xl font-extrabold text-gray-900 font-serif mt-4">Out of clothes...</p>)  // Empty, print text
             }
+
+            {lastSwiped && (
+                <button onClick={handleUndo}
+                className="absolute bottom-16 text-white font-bold text-2xl bg-green-500 hover:bg-green-600 px-8 py-4"
+                >
+                    Undo Swipe
+                </button>
+            )}
+
              {/* <SwipeCard />               Grabs the swipe card  */}
       </div>
     );
