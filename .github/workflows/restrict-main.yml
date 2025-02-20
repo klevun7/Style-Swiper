@@ -1,18 +1,1 @@
-name: Enforce PR Approval
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  check-approval:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check PR approval
-        uses: hmarr/auto-approve-action@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
