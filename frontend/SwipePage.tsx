@@ -82,4 +82,3 @@ export default function SwipePage()
     );
 }
 
-"use client";               // Run on client side instead of server
