@@ -52,7 +52,13 @@ export default function SwipeCard({ item, onSwipe} : SwipeCardProps) {
             // }}
         >
             {/*Content inside card*/}
-            <img src={item.imageUrl} alt={item.name} className="w-full h-64 object-cover rounded-t-lg" />    
+            <img 
+                src={item.imageUrl} 
+                alt={item.name} 
+                className="w-full h-64 object-cover rounded-t-lg" 
+                draggable="false" 
+            />
+   
         </motion.div>
   );
 }
