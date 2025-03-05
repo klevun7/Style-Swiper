@@ -1,11 +1,13 @@
 "use client"; // Required for animations in Next.js
 import React, {useState} from "react";
 import SwipeCard from "@/components/SwipeCard";
-import { url } from "inspector/promises";
-
+// import firebaseApp from "@/lib/firebase";
+// const { db } = firebaseApp;
+import { useRouter } from "next/navigation";
 
 export default function SwipePage()
 {
+    const router = useRouter();
     const [cards, cardSet] = useState([
         {id: 1, name: "Item 1", imageUrl: "https://images.footlocker.com/is/image/EBFL2/N8490100_02?wid=500&hei=500&fmt=png-alpha"},
         {id: 2, name: "Item 2", imageUrl: "https://images.asics.com/is/image/asics/1183B391_200_SR_LT_GLB-3?qlt=80&wid=1280&hei=1452&bgc=255,255,255&resMode=bisharp"},
@@ -32,6 +34,10 @@ export default function SwipePage()
         }
         else if (direction == 'right') {
             setSwipeMessage("Keep");
+
+            /*
+                insert code here to save liked item to wishlist --> firestore
+            */
         }
         setTimeout(() => setSwipeMessage(null), 500);           // Make skip/keep msg disappear after 0.5 second
         cardSet((prev) => prev.slice(1));                       // Remove card from deck
@@ -54,6 +60,7 @@ export default function SwipePage()
             justifyContent: "center",                           // Horizontal alignment of card
             height: "100vh",                                    // 100% of the visible part of the screen (Makes it white, but when you swipe around screen you meet black)
             backgroundColor: "gray",                           // Background color
+            position: "relative",                              // For spacing components inside page
             }}
         >
             {swipeMessage && (<div className="absolute top-1/4 text-6xl font-extrabold text-gray-900 text-white font-serif drop-shadow-lg">
@@ -62,17 +69,27 @@ export default function SwipePage()
             )}
 
 
-            {cards.length > 0 ?                                 // Card stack not empty, set direction
-                (<SwipeCard key={cards[0].id} item={cards[0]} onSwipe={handleSwipe} />)
-                : (<p className="text-9xl font-extrabold text-gray-900 font-serif mt-4">Out of clothes...</p>)  // Empty, print text
-            }
-
-
-            {lastSwiped && (
-                <button onClick={handleUndo}
-                className="absolute bottom-16 text-white font-bold text-2xl bg-green-500 hover:bg-green-600 px-8 py-4"
+            {cards.length > 0 ? (                                // Non-empty card stack, option 'View Wishlist' appears when stack empty
+                <SwipeCard key={cards[0].id} item={cards[0]} onSwipe={handleSwipe} />
+            ) : (
+                <div className="flex flex-col items-center gap-6">
+                <h1 className="text-3xl font-bold text-white"> Out of clothes...&nbsp;</h1>
+    
+                <button
+                    onClick={() => router.push("/wishlist")}
+                    className="px-6 py-3 text-white text-lg font-bold rounded-lg"
                 >
-                    Undo Swipe
+                    View Wishlist
+                    </button>
+                </div>
+            )}  
+
+    
+            {lastSwiped && (                                    // Previous card exists, set card for 'Undo Swipe'
+                <button onClick={handleUndo}
+                className="absolute bottom-16 text-white font-bold text-2xl bg-green-500 px-8 py-4 mt-8"
+                >
+                    &nbsp;&nbsp;Undo Swipe
                 </button>
             )}
 
