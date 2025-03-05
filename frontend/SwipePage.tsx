@@ -53,47 +53,40 @@ export default function SwipePage()
 
 
     return (
-        <div
-            style={{
-            display: "flex",
-            alignItems: "center",                               // Vertical alignment of card
-            justifyContent: "center",                           // Horizontal alignment of card
-            height: "100vh",                                    // 100% of the visible part of the screen (Makes it white, but when you swipe around screen you meet black)
-            backgroundColor: "gray",                           // Background color
-            position: "relative",                              // For spacing components inside page
-            }}
-        >
-            {swipeMessage && (<div className="absolute top-1/4 text-6xl font-extrabold text-gray-900 text-white font-serif drop-shadow-lg">
+        <div className="bg-gray-500 flex flex-col items-center justify-center min-h-screen relative w-full">
+            {swipeMessage && (
+                <div className="absolute left-10 top-1/3 text-5xl font-extrabold text-white font-serif drop-shadow-lg">
                 {swipeMessage}                                  
             </div>                                              // Display the skip/keep message after swipe
             )}
 
-
+            <div className="flex items-center justify-center flex-grow w-full h-full">
             {cards.length > 0 ? (                                // Non-empty card stack, option 'View Wishlist' appears when stack empty
-                <SwipeCard key={cards[0].id} item={cards[0]} onSwipe={handleSwipe} />
+                <SwipeCard key={cards[0].id} item={cards[0]} onSwipe={handleSwipe} index={0} />
             ) : (
                 <div className="flex flex-col items-center gap-6">
-                <h1 className="text-3xl font-bold text-white"> Out of clothes...&nbsp;</h1>
-    
-                <button
-                    onClick={() => router.push("/wishlist")}
-                    className="px-6 py-3 text-white text-lg font-bold rounded-lg"
-                >
-                    View Wishlist
-                    </button>
+                    <h1 className="text-3xl font-bold text-white"> Out of clothes...&nbsp;</h1>
+                    <button
+                        onClick={() => router.push("/wishlist")}
+                        className="px-6 py-3 text-white text-lg font-bold rounded-lg"
+                    >
+                        View Wishlist
+                        </button>
                 </div>
             )}  
+            </div>
 
-    
-            {lastSwiped && (                                    // Previous card exists, set card for 'Undo Swipe'
-                <button onClick={handleUndo}
-                className="absolute bottom-16 text-white font-bold text-2xl bg-green-500 px-8 py-4 mt-8"
-                >
-                    &nbsp;&nbsp;Undo Swipe
-                </button>
+            {/* Previous card exists, set card for 'Undo Swipe'} */ }
+            {lastSwiped && (       
+                <div className="absolute right-4 bottom-4 z-50">                             
+                    <button 
+                        onClick={handleUndo}
+                        className="text-white font-bold text-2xl bg-green-500 px-8 py-4 rounded-lg"
+                    >
+                        Undo Swipe
+                    </button>
+                </div>
             )}
-
-
              {/* <SwipeCard />               Grabs the swipe card  */}
       </div>
     );

@@ -1,12 +1,13 @@
-import { motion, useMotionValue,useTransform } from "framer-motion";         // Allows smooth swiping/dragging
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";         // Allows smooth swiping/dragging
 import React, { useState } from "react";
 
 type SwipeCardProps = {
     item: { id: number; name: string; imageUrl: string }; // Take in clothing item with image
     onSwipe: (direction: "left" | "right") => void;     // Function prop which takes string direction, updates state when swipe occurs
+    index: number;  // index prop to build card deck effect
 };
 
-export default function SwipeCard({ item, onSwipe} : SwipeCardProps) {
+export default function SwipeCard({ item, onSwipe, index} : SwipeCardProps) {
     // Tracks card position
     const [position, setPosition] = useState(0);        
 
@@ -32,6 +33,9 @@ export default function SwipeCard({ item, onSwipe} : SwipeCardProps) {
             setPosition(1);                             // Card is leaving page
             onSwipe("left");
         }
+        else {
+            animate(card_horiz_pos, 0, { type: "spring", stiffness: 300, damping: 20 });
+        }
     };
 
 
@@ -43,13 +47,20 @@ export default function SwipeCard({ item, onSwipe} : SwipeCardProps) {
             whileTap={{ cursor: "grabbing" }}                     // Changes cursor to grab when you drag/tap
             whileHover={{ scale: 1.05 }}                          // Enlarges the card when you hover over it
             // animate={{ x: position, transition: { type: "spring", stiffness: 500, damping: 1000 } }}        // Trying to stop it from sliding after letting go
-            style={{ x:card_horiz_pos, rotate: card_rotate, opacity: card_opacity }}                    // Real time animations
+            style={{ 
+                x:card_horiz_pos, 
+                rotate: card_rotate, 
+                opacity: card_opacity, 
+
+                zIndex: 100 - index, 
+                scale: 1 - index * 0.05, 
+                top: index * 10, }}                    // Real time animations
             transition={{type: "spring", stiffness: 300, damping: 30}}
             onDragEnd={handleDragBounds}                          // Drag boundary issues handled w/ handleDragBounds() method
             className="relative w-[300px] h-[400px] flex flex-col justify-center items-center rounded-lg shadow-lg cursor-grab border-2 border-gray-300 bg-white"
         >
             {/*Content inside card -- fit full item image w/ object-contain*/}
-            <div className="w-full h-64 flex justify-center items-center bg-white-200">
+            <div className="w-full h-64 flex justify-center items-center">
                 <img 
                     src={item.imageUrl} 
                     alt={item.name} 
