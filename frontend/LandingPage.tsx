@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { MotionDiv } from "framer-motion";
 import { ShoppingBag, Sliders, Heart } from "lucide-react";
+import Image from "next/image";
 
 export default function LandingPage() {
   return (
