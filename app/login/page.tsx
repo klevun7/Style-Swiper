@@ -1,27 +1,40 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = async () => {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
 
-    const data = await res.json();
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
-      window.location.href = "/"; 
-    } else {
-      setError(data.error);
-    }
-  };
+const handleLogin = async () => {
+  const res = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  console.log("Response status:", res.status);
+  const data = await res.json();
+  
+  if (res.ok) {
+    // Store session info in localStorage or cookies
+    localStorage.setItem("userSession", JSON.stringify({
+      isLoggedIn: true,
+      uid: data.uid, 
+      email: email
+    }));
+    
+    console.log("Login successful, redirecting to preferences");
+    router.push("/preferences");  
+  } else {
+    console.log("Login failed with error:", data.error);
+    setError(data.error);
+  }
+};
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 ">
@@ -31,14 +44,18 @@ export default function LoginPage() {
           <input 
             type="email" 
             value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }} 
             placeholder="Email"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
           />
           <input 
             type="password" 
             value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }} 
             placeholder="Password"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
           />

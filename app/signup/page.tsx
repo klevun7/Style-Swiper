@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 export default function SignupPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,7 +20,7 @@ export default function SignupPage() {
     const data = await res.json();
     if (res.ok) {
       localStorage.setItem("token", data.token);
-      window.location.href = "/";
+      router.push("/preferences");
     } else {
       setError(data.error);
     }
