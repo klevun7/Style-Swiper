@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { db } from "@/lib/firebase"; // Note: removed auth import since we're not using Firebase Auth directly
 import { collection, getDocs, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
+
 export default function PreferencesPage() {
     const [styles, setStyles] = useState<any[]>([]);
     const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
@@ -143,6 +144,7 @@ export default function PreferencesPage() {
             >
                 Save Preferences
             </button>
+      
         </div>
     );
 }

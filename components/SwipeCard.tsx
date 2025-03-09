@@ -2,7 +2,7 @@ import { motion, useMotionValue, useTransform, animate } from "framer-motion";  
 import React, { useState } from "react";
 
 type SwipeCardProps = {
-    item: { id: number; name: string; imageUrl: string }; // Take in clothing item with image
+    item: { id: number; name: string; imageUrl: string; price: number; category: string }; // Take in clothing item with image
     onSwipe: (direction: "left" | "right") => void;     // Function prop which takes string direction, updates state when swipe occurs
     index: number;  // index prop to build card deck effect
 };
@@ -60,7 +60,14 @@ export default function SwipeCard({ item, onSwipe, index} : SwipeCardProps) {
             className="relative w-[300px] h-[400px] flex flex-col justify-center items-center rounded-lg shadow-lg cursor-grab border-2 border-gray-300 bg-white"
         >
             {/*Content inside card -- fit full item image w/ object-contain*/}
+            <div className="flex flex-col items-start justify-start w-full h-16 px-4">
+            <h1 className=" font-bold">{item.name}</h1>
+            <h2 className="font-semibold">${item.price}</h2>
+            
+            </div>
+            
             <div className="w-full h-64 flex justify-center items-center">
+                
                 <img 
                     src={item.imageUrl} 
                     alt={item.name} 
