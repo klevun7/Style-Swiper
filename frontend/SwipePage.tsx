@@ -158,13 +158,6 @@ export default function SwipePage() {
                     </button>
                 </div>
             )}
-            
-            {/* Optional: Display current active preferences */}
-            {userPreferences.length > 0 && (
-                <div className="absolute left-4 top-4 text-sm text-white">
-                    Showing: {userPreferences.join(", ")} styles
-                </div>
-            )}
         </div>
     );
 }
