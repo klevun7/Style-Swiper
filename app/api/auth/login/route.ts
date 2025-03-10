@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/lib/firebase";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 
 const auth = getAuth(app);
 

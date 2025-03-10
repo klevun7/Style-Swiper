@@ -1,32 +1,46 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { getAuth, signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 const SignOutButton = () => {
   const auth = getAuth();
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     try {
+      setIsLoggingOut(true);
+      
+      // Sign out from Firebase Auth
       await signOut(auth);
-      const response = await fetch("/api/logout", { method: "POST" });
+      
+      // Clear any local storage data
+      localStorage.removeItem("userSession");
+      
+      
+    
+      router.push("/login");
+      
 
-      if (response.ok) {
-        window.location.href = "/login"; 
-      } else {
-        console.error("Logout API failed");
-      }
     } catch (error) {
       console.error("Error logging out:", error);
+      alert("Failed to sign out. Please try again.");
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 
   return (
     <button
       onClick={handleLogout}
-      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+      disabled={isLoggingOut}
+      className={`${
+        isLoggingOut ? "bg-gray-400" : "bg-red-500 hover:bg-red-600"
+      } text-white px-4 py-2 rounded-lg transition`}
     >
-      Sign Out
+      {isLoggingOut ? "Signing Out..." : "Sign Out"}
     </button>
   );
 };
