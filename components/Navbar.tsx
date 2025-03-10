@@ -92,7 +92,7 @@ export default function Navbar() {
                     <span className="text-sm font-medium text-gray-300">Hi, {username}</span>
                     <button
                       onClick={handleSignOut}
-                      className="transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 px-3 py-1 text-sm text-white bg-red-600 rounded-md hover:bg-red-700"
+                      className="transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 px-3 py-1 text-sm text-white bg-red-500 rounded-md hover:bg-red-700"
                     >
                       Sign Out
                     </button>
