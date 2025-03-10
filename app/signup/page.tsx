@@ -87,7 +87,7 @@ export default function SignupPage() {
   };
 
   
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: any) => {
     if (e.key === 'Enter') {
       handleSignup();
     }
