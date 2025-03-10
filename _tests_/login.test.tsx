@@ -1,85 +1,98 @@
+// __tests__/Signup.test.tsx
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
-import LoginPage from '@/app/login/page';
-
-// Mock auth functions
-const mockSignIn = jest.fn();
-const mockAuthStateChange = jest.fn();
+import SignupPage from '@/app/signup/page';
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }));
 
-// Mock Firebase
-jest.mock('@/lib/firebase', () => ({
-  app: {},
-}));
-
-// Mock Firebase auth with function mocks
-jest.mock('firebase/auth', () => ({
-  getAuth: jest.fn(() => ({})),
-  signInWithEmailAndPassword: (...args) => mockSignIn(...args),
-  onAuthStateChanged: (auth, callback) => {
-    // Call the auth state callback with null (not logged in)
-    mockAuthStateChange(auth, callback);
-    callback(null);
-    return jest.fn(); // Return unsubscribe function
-  },
-}));
-
-describe('LoginPage Tests', () => {
+describe('SignupPage Tests', () => {
   const mockPush = jest.fn();
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
     (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
+    localStorage.clear();
   });
 
-  test('Test 1: Shows validation error when form is submitted with empty fields', async () => {
-    // Render the login page
-    render(<LoginPage />);
-    
-    // Get login button and click it without entering credentials
-    const loginButton = screen.getByRole('button', { name: /login/i });
-    fireEvent.click(loginButton);
-    
-    // Verify error message is displayed
-    const errorMessage = await screen.findByText(/please enter both email and password/i);
-    expect(errorMessage).toBeInTheDocument();
-    
-    // Verify we didn't try to navigate away
-    expect(mockPush).not.toHaveBeenCalled();
-  });
+  test('displays error if server returns invalid email error', async () => {
+    // 1) Mock fetch to simulate a server-side Firebase invalid email error
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        json: () =>
+          Promise.resolve({
+            error: 'Firebase: Error (auth/invalid-email)',
+          }),
+      } as Response)
+    ) as jest.Mock;
 
-  test('Test 2: Redirects to preferences page after successful login', async () => {
-    // Mock successful login
-    mockSignIn.mockResolvedValueOnce({
-      user: { uid: 'test-uid', email: 'test@example.com' }
+    // 2) Render SignupPage and fill in an obviously invalid email
+    render(<SignupPage />);
+    fireEvent.change(screen.getByPlaceholderText(/email/i), {
+      target: { value: 'invalidEmail' },
     });
-    
-    // Render the login page
-    render(<LoginPage />);
-    
-    // Fill in the form
-    const emailInput = screen.getByPlaceholderText(/email/i);
-    const passwordInput = screen.getByPlaceholderText(/password/i);
-    
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    
-    // Submit the form
-    const loginButton = screen.getByRole('button', { name: /login/i });
-    fireEvent.click(loginButton);
-    
-    // Wait for the sign in to complete and verify redirect
+    fireEvent.change(screen.getByPlaceholderText(/password/i), {
+      target: { value: '12345' },
+    });
+
+    // 3) Click "Sign Up"
+    fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
+
+    // 4) Wait for the error to appear
     await waitFor(() => {
-      expect(mockSignIn).toHaveBeenCalledWith(
-        expect.anything(),
-        'test@example.com',
-        'password123'
-      );
+      // The text from data.error is shown in the component
+      expect(screen.getByText('Firebase: Error (auth/invalid-email)')).toBeInTheDocument();
+    });
+
+    // 5) Ensure no redirect and no token stored
+    expect(mockPush).not.toHaveBeenCalled();
+    expect(localStorage.getItem('token')).toBeNull();
+  });
+
+  test('signs up user successfully and redirects on valid credentials', async () => {
+    // 1) Mock fetch to simulate a successful signup
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () =>
+          Promise.resolve({
+            token: 'fake-token',
+          }),
+      } as Response)
+    ) as jest.Mock;
+
+    // 2) Render SignupPage and fill in valid fields
+    render(<SignupPage />);
+    fireEvent.change(screen.getByPlaceholderText(/email/i), {
+      target: { value: 'valid@example.com' },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/password/i), {
+      target: { value: 'securePassword' },
+    });
+
+    // 3) Click "Sign Up"
+    fireEvent.click(screen.getByRole('button', { name: /sign up/i }));
+
+    // 4) Wait for the fetch, localStorage, and push calls
+    await waitFor(() => {
+      // Check fetch call
+      expect(global.fetch).toHaveBeenCalledWith('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: 'valid@example.com',
+          password: 'securePassword',
+        }),
+      });
+
+      // localStorage should have the token
+      expect(localStorage.getItem('token')).toBe('fake-token');
+
+      // Router redirect to /preferences
       expect(mockPush).toHaveBeenCalledWith('/preferences');
     });
   });
