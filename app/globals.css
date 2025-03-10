@@ -2,3 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "Clash Grotesk";
+    src: url("/fonts/ClashGrotesk-Medium.woff2") format("woff2"),
+         url("/fonts/ClashGrotesk-Medium.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: "Clash Grotesk", sans-serif;
+  }
+  
