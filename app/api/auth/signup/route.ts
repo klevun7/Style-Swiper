@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import  { app , db }  from "@/lib/firebase"; 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import  { app, db}  from "@/lib/firebase"; 
 import { doc, setDoc } from "firebase/firestore";
 
 const auth = getAuth(app);

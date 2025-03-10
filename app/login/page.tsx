@@ -2,8 +2,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { app } from "@/lib/firebase"; 
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { app } from "@/lib/firebase"; // Ensure this import works with your firebase setup
+
 
 export default function LoginPage() {
   const router = useRouter();

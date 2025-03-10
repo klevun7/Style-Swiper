@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getAuth, signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
+import { app } from "@/lib/firebase"; 
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function Navbar() {
   const router = useRouter();
   
   useEffect(() => {
-    const auth = getAuth();
+    const auth = getAuth(app);
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setUsername(user.displayName || user.email?.split('@')[0] || 'User');
@@ -39,12 +40,12 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-800 text-white shadow-lg">
+    <nav className="bg-slate-600 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-xl font-bold">StyleSwipe</span>
+              <span className="text-xl font-bold">StyleSwiper</span>
             </Link>
           </div>
           
@@ -104,7 +105,7 @@ export default function Navbar() {
                   href="/login"
                   className="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
                 >
-                  Sign In
+                  Log In
                 </Link>
                 <Link
                   href="/signup"

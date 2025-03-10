@@ -49,7 +49,6 @@ export default function SwipePage() {
                 
                 
                 if (preferences.length > 0) {
-                    // Create a query to filter clothing items by categories that match preferences
                     const clothingQuery = query(
                         collection(db, "clothingItems"),
                         where("category", "in", preferences)
