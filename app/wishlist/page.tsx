@@ -92,7 +92,7 @@ export default function WishlistPage() {
             <h2 className="text-xl font-medium text-gray-700 mb-4">Your wishlist is empty</h2>
             <p className="text-gray-500 mb-6">Swipe right on items you like to add them to your wishlist.</p>
             <button
-              onClick={() => router.push("/swipe")}
+              onClick={() => router.push("/swipe-page")}
               className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
             >
               Start Swiping

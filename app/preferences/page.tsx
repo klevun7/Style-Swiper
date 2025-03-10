@@ -6,6 +6,7 @@ import { db } from "@/lib/firebase"; // Note: removed auth import since we're no
 import { collection, getDocs, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
 
+
 export default function PreferencesPage() {
     const [styles, setStyles] = useState<any[]>([]);
     const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
@@ -22,7 +23,7 @@ export default function PreferencesPage() {
                 
                 if (userSession) {
                     const sessionData = JSON.parse(userSession);
-                    console.log("Found user session:", sessionData);
+                    
                     
                     if (sessionData.isLoggedIn) {
                         setUser({ uid: sessionData.uid, email: sessionData.email });
@@ -125,26 +126,28 @@ export default function PreferencesPage() {
     }
     
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Select Your Style Preferences</h1>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6">
+            <h1 className="text-3xl font-bold text-gray-800 mb-6">Select Your Style Preferences</h1>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-2xl">
                 {styles.map(style => (
                     <button
                         key={style.id}
                         onClick={() => handleSelectStyle(style.id)}
-                        className={`p-4 border rounded-lg ${selectedStyles.includes(style.id) ? "bg-red-400 text-white" : "bg-white"}`}
+                        className={`p-4 rounded-lg shadow-md text-center transition-all duration-300 font-semibold text-lg 
+                        ${selectedStyles.includes(style.id) ? "bg-blue-600 text-white shadow-lg scale-105" : "bg-white text-gray-800 hover:bg-gray-200"}`}
                     >
-                        <h2 className="text-lg font-bold">{style.name}</h2>
+                        {style.name}
                     </button>
                 ))}
             </div>
             <button 
                 onClick={savePreferences} 
-                className="mt-4 bg-green-500 text-white p-2 rounded"
+                className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300"
             >
                 Save Preferences
             </button>
-      
+            <div className="mt-6">
+            </div>
         </div>
     );
 }

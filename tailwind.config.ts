@@ -10,6 +10,9 @@ export default {
   theme: {
     extend: {
       colors: {
+        fontFamily: {
+          clash: ["Clash Grotesk", "sans-serif"],
+        },
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
