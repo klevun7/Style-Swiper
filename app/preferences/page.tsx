@@ -23,7 +23,7 @@ export default function PreferencesPage() {
                 
                 if (userSession) {
                     const sessionData = JSON.parse(userSession);
-                    console.log("Found user session:", sessionData);
+                    
                     
                     if (sessionData.isLoggedIn) {
                         setUser({ uid: sessionData.uid, email: sessionData.email });
