@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -13,8 +13,11 @@ export default function Index() {
         <p className="text-lg text-gray-600 mb-8 max-w-xl text-center">
           Discover trendy outfits by swiping left or right. Save your favorite looks and shop them instantly.
         </p>
-        <Link href='/login'>
-          <Button size="lg" className="transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 bg-blue-600 text-white px-3 py-3 rounded-xl shadow-lg hover:bg-blue-700">
+        <Link href="/login">
+          <Button
+            size="lg"
+            className="transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 bg-blue-600 text-white px-3 py-3 rounded-xl shadow-lg hover:bg-blue-700"
+          >
             Start Swiping
           </Button>
         </Link>
@@ -22,42 +25,42 @@ export default function Index() {
 
       <section className="max-w-4xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
         <div className="feature-card">
-        <Image 
-            src="/landing-page/swipe_pic.png" 
+          <Image
+            src="/landing-page/swipe_pic.png"
             alt="Swipe Image"
-            width={500} 
-            height={300}
-            className="rounded-lg shadow-lg transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300" 
+            width={400} // Set a fixed width
+            height={250} // Set a fixed height
+            className="rounded-lg shadow-lg transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
           />
           <h3 className="text-xl font-bold mt-2 mb-2">Swipe</h3>
-          <p className="text-gray-600 font-clash">
+          <p className="text-gray-600">
             Quickly browse through our curated collection by swiping left and right to find your style.
           </p>
         </div>
-        
+
         <div className="feature-card">
-        <Image 
-            src="/landing-page/swipe_pic2.png" 
-            alt="Swipe Image"
-            width={500} 
-            height={300}
-            className="rounded-lg shadow-lg transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300" 
+          <Image
+            src="/landing-page/swipe_pic2.png"
+            alt="Save Image"
+            width={400}
+            height={250}
+            className="rounded-lg shadow-lg transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
           />
           <h3 className="text-xl font-bold mt-2 mb-2">Save</h3>
           <p className="text-gray-600">
-            Add your favorite items to your wishlist with a simple swipe right to view them later. 
+            Add your favorite items to your wishlist with a simple swipe right to view them later.
           </p>
         </div>
-        
+
         <div className="feature-card">
-        <Image 
-            src="/landing-page/swipe_pic3.png" 
-            alt="Swipe Image"
-            width={500} 
-            height={300}
-            className="rounded-lg shadow-lg transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300" 
+          <Image
+            src="/landing-page/swipe_pic3.png"
+            alt="Custom-Tailored Preferences"
+            width={400}
+            height={250}
+            className="rounded-lg shadow-lg transition ease-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
           />
-          <h3 className="text-xl font-bold mt-2 mb-2">Custom-Tailored Prefernces</h3>
+          <h3 className="text-xl font-bold mt-2 mb-2">Shop</h3>
           <p className="text-gray-600">
             Purchase your saved items directly from retailers whenever you&apos;re ready to upgrade your wardrobe.
           </p>
