@@ -53,7 +53,7 @@ export default function SignupPage() {
       
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
-        createdAt: new Date(),
+        //createdAt: new Date(),
         preferences: [] 
       });
       

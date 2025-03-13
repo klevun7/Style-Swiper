@@ -73,6 +73,7 @@ export default function SwipeCard({ item, onSwipe, index} : SwipeCardProps) {
                     alt={item.name} 
                     className="max-w-full max-h-full object-cover"    // maintain aspect ratio of image
                     draggable="false" 
+                    width={full}
                 />
             </div>
         </motion.div>
